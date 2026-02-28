@@ -47,10 +47,13 @@ const handleAddNote = async () => {
         notes.value.unshift(newNote)
         currentNote.value = newNote
         ElMessage.success('已创建新页面')
-    } catch (err) {
+    } catch {
         ElMessage.error('创建失败')
     }
 }
+
+// ... 
+
 
 const handleSelectNote = (note) => {
     currentNote.value = note
@@ -72,7 +75,7 @@ const saveCurrentNote = async () => {
             target.updatedAt = new Date().toISOString()
         }
         isSaving.value = false
-    } catch (err) {
+    } catch {
         isSaving.value = false
     }
 }
@@ -100,7 +103,7 @@ const handleDelete = async () => {
         notes.value = notes.value.filter(n => n._id !== currentNote.value._id)
         currentNote.value = notes.value.length ? notes.value[0] : null
         ElMessage.success('已删除')
-    } catch (err) {
+    } catch {
         // cancel
     }
 }
@@ -113,6 +116,7 @@ const handleLogout = () => {
 onMounted(() => {
     fetchNotes()
 })
+
 </script>
 
 <template>
@@ -421,5 +425,67 @@ onMounted(() => {
 /* 覆盖 Element 下拉菜单样式 */
 .danger-text {
     color: #eb5757;
+}
+
+/* =======================================
+   ✨ 编辑器右侧预览区 Notion 化改造 ✨
+======================================= */
+
+/* 1. 弱化左右两栏的分割线 */
+:deep(.v-md-editor__preview-wrapper) {
+    background: transparent !important;
+    border-left: 1px dashed #f0f0f0 !important;
+    /* 改用极淡的虚线，或者可以直接写 none 去掉 */
+}
+
+/* 2. 覆盖默认主题的背景色，让它和我们的外层背景融为一体 */
+:deep(.github-markdown-body),
+:deep(.vuepress-markdown-body),
+:deep(.v-md-editor-preview) {
+    background: transparent !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif !important;
+    color: #37352f !important;
+    /* Notion 标准深灰色 */
+    padding: 24px 40px !important;
+    /* 增加四周的“呼吸感”留白 */
+}
+
+/* 3. 美化 Markdown 里的引用区块 (Quote) */
+:deep(.v-md-editor-preview blockquote) {
+    border-left: 3px solid #37352f !important;
+    background: transparent !important;
+    color: #787774 !important;
+    padding: 2px 14px !important;
+    margin: 1.2em 0 !important;
+}
+
+/* 4. 美化代码块的底色 (更接近 Notion 的浅灰) */
+:deep(.v-md-editor-preview pre) {
+    background-color: #f7f7f5 !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 5. 隐藏编辑器底部多余的状态栏 (统计字数那一行，让界面更纯粹) */
+:deep(.v-md-editor__footer) {
+    display: none !important;
+}
+
+/* 强制修复：左侧输入框（Markdown 源码）字体颜色为深灰 */
+:deep(.v-md-editor__editor-wrapper textarea) {
+    color: #37352f !important;
+}
+
+/* 强制修复：右侧预览区的所有文本颜色 */
+:deep(.v-md-editor-preview),
+:deep(.v-md-editor-preview p),
+:deep(.v-md-editor-preview h1),
+:deep(.v-md-editor-preview h2),
+:deep(.v-md-editor-preview h3),
+:deep(.v-md-editor-preview h4),
+:deep(.v-md-editor-preview h5),
+:deep(.v-md-editor-preview h6),
+:deep(.v-md-editor-preview li) {
+    color: #37352f !important;
 }
 </style>
