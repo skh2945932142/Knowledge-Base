@@ -40,7 +40,7 @@ const handleSubmit = async () => {
 
         if (isRegister.value) {
             // --- 注册成功 ---
-            ElMessage.success('注册成功！请直接登录')
+            ElMessage.success('注册成功，请使用新账号登录')
             toggleMode() // 自动切回登录模式
         } else {
             // --- 登录成功 ---
@@ -50,7 +50,7 @@ const handleSubmit = async () => {
             localStorage.setItem('token', token)
             localStorage.setItem('userInfo', JSON.stringify(user))
 
-            ElMessage.success('登录成功，欢迎回来！')
+            ElMessage.success('登录成功')
 
             // B. 跳转首页
             router.push('/')
@@ -75,14 +75,14 @@ const linkText = computed(() => isRegister.value ? '已有账号？去登录' : 
   <div class="login_Page">
     <div class="login_Container">
       <div class="login_Header">
-        <h1 class="logo">
-          😋
-        </h1>
+        <div class="brand-mark">
+          知识库
+        </div>
         <h2 class="title">
           {{ titleText }}
         </h2>
         <p class="subtitle">
-          记录你的每一个灵感
+          安全管理个人知识与工作记录
         </p>
       </div>
 
@@ -158,9 +158,19 @@ const linkText = computed(() => isRegister.value ? '已有账号？去登录' : 
     margin-bottom: 40px;
 }
 
-.logo {
-    font-size: 48px;
+.brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    min-width: 112px;
     margin: 0 0 16px 0;
+    padding: 0 18px;
+    border-radius: 999px;
+    background: #eef5fc;
+    color: #1a6fc7;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .title {
