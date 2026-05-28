@@ -1,13 +1,46 @@
-# vuedemo
+# 个人知识库前端
 
-Vue 3 + Vite demo project with a reusable cross-project engineering baseline.
+基于 Vue 3、Vite 和 Element Plus 构建的个人知识库前端应用，支持账号登录、页面管理、Markdown 编辑与内容预览。
 
-## Local Development
+## 功能概览
+
+- 用户登录与注册
+- 页面列表管理
+- Markdown 编辑与预览
+- 页面内容自动保存
+- 登录状态校验与路由拦截
+- 开发环境接口代理
+
+## 技术栈
+
+- Vue 3
+- Vite
+- Element Plus
+- Vue Router
+- Axios
+- @kangc/v-md-editor
+
+## 环境要求
+
+建议使用 Node.js 18.0.0 或更高版本。
+
+## 开发说明
+
+本项目为前后端分离应用。启动前端前，请确保后端服务已正常运行，并可通过开发环境代理访问 `/api` 接口。
+
+## 安装依赖
 
 ```bash
 npm install
+```
+
+## 启动开发服务
+
+```bash
 npm run dev
 ```
+
+默认访问地址为：`http://localhost:5173`。
 
 ## Quality Gate Commands
 
@@ -17,18 +50,22 @@ npm run test:unit
 npm run build
 ```
 
-These three checks are the required merge gate in CI.
+这三个检查是 CI 中必需的合并门禁。
 
-## Cross-Project Standard
+## 构建生产版本
 
-The full plugin strategy and delivery rules are documented here:
+```bash
+npm run build
+```
 
-- `docs/engineering/cross-project-plugin-standard.md`
+## 目录结构
 
-Key baseline files in this repository:
-
-- `.github/workflows/quality-gate.yml`
-- `.github/pull_request_template.md`
-- `tests/quality-gate.test.js`
-
-Copy these into new repositories to bootstrap the same governance model.
+```text
+src/
+├── assets/          # 静态资源
+├── components/      # 公共组件
+├── router/          # 路由配置
+├── views/           # 页面组件
+├── App.vue          # 根组件
+└── main.js          # 应用入口
+```

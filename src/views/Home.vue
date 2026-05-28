@@ -3,7 +3,7 @@ import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Delete, MoreFilled } from '@element-plus/icons-vue' // 引入更多图标装饰
+import { Delete, MoreFilled, Document } from '@element-plus/icons-vue'
 import NoteList from '../components/NoteList.vue'
 
 // --- 配置 ---
@@ -46,9 +46,9 @@ const handleAddNote = async () => {
         const newNote = res.data
         notes.value.unshift(newNote)
         currentNote.value = newNote
-        ElMessage.success('已创建新页面')
+        ElMessage.success('页面创建成功')
     } catch {
-        ElMessage.error('创建失败')
+        ElMessage.error('页面创建失败')
     }
 }
 
@@ -102,7 +102,7 @@ const handleDelete = async () => {
         await axios.delete(`${API_BASE}/notes/${currentNote.value._id}`, { headers: getHeaders() })
         notes.value = notes.value.filter(n => n._id !== currentNote.value._id)
         currentNote.value = notes.value.length ? notes.value[0] : null
-        ElMessage.success('已删除')
+        ElMessage.success('页面已移至回收站')
     } catch {
         // cancel
     }
@@ -128,7 +128,7 @@ onMounted(() => {
       >
         <div class="sidebar-header">
           <div class="workspace-name">
-            <span class="emoji">🦁</span> 我的知识库
+            <span class="workspace-initial">K</span> 我的知识库
           </div>
           <el-dropdown trigger="click">
             <el-icon class="setting-icon">
@@ -164,7 +164,9 @@ onMounted(() => {
         >
           <div class="top-bar">
             <div class="breadcrumbs">
-              <span class="emoji-icon">📄</span>
+              <el-icon class="breadcrumb-icon">
+                <Document />
+              </el-icon>
               <span class="page-path">{{ currentNote.title || '无标题' }}</span>
               <span
                 v-if="isSaving"
@@ -215,8 +217,8 @@ onMounted(() => {
           class="empty-state"
         >
           <div class="empty-content">
-            <h1>👋 欢迎回来</h1>
-            <p>准备好记录今天的想法了吗？</p>
+            <h1>暂无页面</h1>
+            <p>创建一个页面，用于整理文档、计划和工作记录。</p>
             <el-button
               type="primary"
               size="large"
@@ -275,9 +277,26 @@ onMounted(() => {
     color: #37352f;
 }
 
+.workspace-initial {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: #e9e9e7;
+    color: #37352f;
+    font-size: 12px;
+    font-weight: 700;
+}
+
 .setting-icon {
     color: #999;
     transform: rotate(90deg);
+}
+
+.breadcrumb-icon {
+    color: #999;
 }
 
 .sidebar-content {
@@ -350,7 +369,7 @@ onMounted(() => {
     /* opacity: 0.8; */
 }
 
-/* 内容居中区 - 核心美化点 */
+/* 主内容区域 */
 .content-wrapper {
     max-width: 900px;
     /* 限制最大宽度，模仿阅读体验 */
@@ -364,7 +383,7 @@ onMounted(() => {
     flex-direction: column;
 }
 
-/* 那个大大的标题 */
+/* 标题输入框 */
 .big-title {
     font-size: 40px;
     font-weight: 700;
@@ -427,18 +446,16 @@ onMounted(() => {
     color: #eb5757;
 }
 
-/* =======================================
-   ✨ 编辑器右侧预览区 Notion 化改造 ✨
-======================================= */
+/* 编辑器右侧预览区样式调整 */
 
-/* 1. 弱化左右两栏的分割线 */
+/* 1. 弱化左右两栏分割线 */
 :deep(.v-md-editor__preview-wrapper) {
     background: transparent !important;
     border-left: 1px dashed #f0f0f0 !important;
     /* 改用极淡的虚线，或者可以直接写 none 去掉 */
 }
 
-/* 2. 覆盖默认主题的背景色，让它和我们的外层背景融为一体 */
+/* 2. 保持预览区背景与主区域一致 */
 :deep(.github-markdown-body),
 :deep(.vuepress-markdown-body),
 :deep(.v-md-editor-preview) {
@@ -450,7 +467,7 @@ onMounted(() => {
     /* 增加四周的“呼吸感”留白 */
 }
 
-/* 3. 美化 Markdown 里的引用区块 (Quote) */
+/* 3. 调整 Markdown 引用区块 */
 :deep(.v-md-editor-preview blockquote) {
     border-left: 3px solid #37352f !important;
     background: transparent !important;
@@ -459,24 +476,24 @@ onMounted(() => {
     margin: 1.2em 0 !important;
 }
 
-/* 4. 美化代码块的底色 (更接近 Notion 的浅灰) */
+/* 4. 调整代码块背景 */
 :deep(.v-md-editor-preview pre) {
     background-color: #f7f7f5 !important;
     border-radius: 6px !important;
     border: 1px solid rgba(0, 0, 0, 0.05) !important;
 }
 
-/* 5. 隐藏编辑器底部多余的状态栏 (统计字数那一行，让界面更纯粹) */
+/* 编辑器底部状态栏 */
 :deep(.v-md-editor__footer) {
     display: none !important;
 }
 
-/* 强制修复：左侧输入框（Markdown 源码）字体颜色为深灰 */
+/* 左侧输入框文本颜色 */
 :deep(.v-md-editor__editor-wrapper textarea) {
     color: #37352f !important;
 }
 
-/* 强制修复：右侧预览区的所有文本颜色 */
+/* 右侧预览区文本颜色 */
 :deep(.v-md-editor-preview),
 :deep(.v-md-editor-preview p),
 :deep(.v-md-editor-preview h1),

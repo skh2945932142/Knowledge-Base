@@ -19,7 +19,7 @@ onMounted(() => {
         value: props.modelValue,// 初始化内容
         height: '100%',
         width: '100%',
-        placeholder: '开始记录你的想法...',
+        placeholder: '请输入页面内容，支持 Markdown 格式',
         cache: { enable: false },
         toolbarConfig: { pin: true },
         //监听内容变化
