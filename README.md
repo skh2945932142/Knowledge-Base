@@ -42,6 +42,16 @@ npm run dev
 
 默认访问地址为：`http://localhost:5173`。
 
+## Quality Gate Commands
+
+```bash
+npm run lint
+npm run test:unit
+npm run build
+```
+
+这三个检查是 CI 中必需的合并门禁。
+
 ## 构建生产版本
 
 ```bash

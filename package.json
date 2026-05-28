@@ -8,7 +8,10 @@
     "build": "vite build",
     "preview": "vite preview",
     "prepare": "husky install",
-    "lint": "eslint . --ext .vue,.js --fix"
+    "lint": "eslint . --ext .vue,.js",
+    "lint:fix": "eslint . --ext .vue,.js --fix",
+    "test:unit": "node --test",
+    "test": "npm run test:unit"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.2",
